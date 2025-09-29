@@ -16,9 +16,9 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ application }) =
   });
 
   const fees = [
-    { name: 'Application Fee', amount: 500, required: true },
-    { name: 'Processing Fee', amount: 50, required: true },
-    { name: 'Document Verification', amount: 25, required: true }
+    { name: 'Application Fee', amount: 750000, required: true },
+    { name: 'Processing Fee', amount: 75000, required: true },
+    { name: 'Document Verification', amount: 37500, required: true }
   ];
 
   const totalAmount = fees.reduce((sum, fee) => sum + fee.amount, 0);
@@ -66,7 +66,7 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ application }) =
               {fees.map((fee, index) => (
                 <div key={index} className="flex justify-between text-sm">
                   <span className="text-gray-600">{fee.name}</span>
-                  <span className="font-medium">${fee.amount}</span>
+                  <span className="font-medium">₦{fee.amount.toLocaleString()}</span>
                 </div>
               ))}
             </div>
@@ -74,7 +74,7 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ application }) =
             <div className="border-t border-gray-200 pt-3">
               <div className="flex justify-between">
                 <span className="font-semibold text-gray-900">Total</span>
-                <span className="font-bold text-xl text-gray-900">${totalAmount}</span>
+                <span className="font-bold text-xl text-gray-900">₦{totalAmount.toLocaleString()}</span>
               </div>
             </div>
 
@@ -256,11 +256,11 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ application }) =
                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                   <h4 className="font-medium text-gray-900 mb-2">Bank Transfer Details</h4>
                   <div className="text-sm text-gray-600 space-y-1">
-                    <p><strong>Bank:</strong> First National Bank</p>
-                    <p><strong>Account Name:</strong> Lincoln High School</p>
-                    <p><strong>Account Number:</strong> 1234567890</p>
-                    <p><strong>Routing Number:</strong> 021000021</p>
-                    <p><strong>Reference:</strong> Application #{application.id}</p>
+                  <p><strong>Bank:</strong> Zenith Bank</p>
+                  <p><strong>Account Name:</strong> Nigerian Secondary School</p>
+                  <p><strong>Account Number:</strong> 9876543210</p>
+                  <p><strong>Routing Number:</strong> 057</p>
+                  <p><strong>Reference:</strong> Application #{application.id}</p>
                   </div>
                 </div>
               )}
@@ -279,7 +279,7 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ application }) =
                 className="w-full mt-6 flex items-center justify-center px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-200"
               >
                 <CreditCard className="h-5 w-5 mr-2" />
-                Pay ${totalAmount}
+                Pay ₦{totalAmount.toLocaleString()}
               </button>
 
               <p className="text-xs text-gray-500 mt-4 text-center">

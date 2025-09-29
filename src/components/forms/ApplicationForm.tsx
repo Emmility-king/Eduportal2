@@ -19,6 +19,7 @@ export const ApplicationForm: React.FC<ApplicationFormProps> = ({ application, o
     city: '',
     state: '',
     zipCode: '',
+    country: 'Nigeria',
     parentName: '',
     parentEmail: '',
     parentPhone: '',
@@ -207,6 +208,21 @@ export const ApplicationForm: React.FC<ApplicationFormProps> = ({ application, o
                   required
                   disabled={isReadOnly}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Country *
+                </label>
+                <input
+                  type="text"
+                  name="country"
+                  value={formData.country}
+                  onChange={handleChange}
+                  required
+                  readOnly
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-100"
                 />
               </div>
             </div>

@@ -6,6 +6,7 @@ import { StudentDashboard } from './roles/StudentDashboard';
 import { ParentDashboard } from './roles/ParentDashboard';
 import { AdminDashboard } from './roles/AdminDashboard';
 import { AdmissionOfficerDashboard } from './roles/AdmissionOfficerDashboard';
+import { TeacherDashboard } from './roles/TeacherDashboard';
 
 interface DashboardProps {
   user: User;
@@ -26,6 +27,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
         return <AdminDashboard user={user} activeTab={activeTab} setActiveTab={setActiveTab} />;
       case 'admission_officer':
         return <AdmissionOfficerDashboard user={user} activeTab={activeTab} setActiveTab={setActiveTab} />;
+      case 'teacher':
+        return <TeacherDashboard user={user} activeTab={activeTab} setActiveTab={setActiveTab} />;
       default:
         return <div>Invalid role</div>;
     }

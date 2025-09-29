@@ -6,7 +6,7 @@ export interface User {
   avatar?: string;
 }
 
-export type UserRole = 'student' | 'parent' | 'admin' | 'admission_officer';
+export type UserRole = 'student' | 'parent' | 'admin' | 'admission_officer' | 'teacher';
 
 export interface Application {
   id: string;

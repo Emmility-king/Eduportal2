@@ -27,6 +27,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
   const demoCredentials = [
     { role: 'student' as UserRole, email: 'student@demo.com', label: 'Student Portal' },
     { role: 'parent' as UserRole, email: 'parent@demo.com', label: 'Parent Portal' },
+    { role: 'teacher' as UserRole, email: 'teacher@demo.com', label: 'Teacher Portal' },
     { role: 'admin' as UserRole, email: 'admin@demo.com', label: 'Administrator' },
     { role: 'admission_officer' as UserRole, email: 'officer@demo.com', label: 'Admission Officer' }
   ];
@@ -38,7 +39,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
           <div className="mx-auto h-16 w-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mb-4">
             <GraduationCap className="h-8 w-8 text-white" />
           </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">EduPortal</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Secondary School Portal</h2>
           <p className="text-gray-600">School Enrollment & Admission System</p>
         </div>
         
@@ -56,6 +57,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
               >
                 <option value="student">Student Portal</option>
                 <option value="parent">Parent Portal</option>
+                <option value="teacher">Teacher Portal</option>
                 <option value="admin">Administrator</option>
                 <option value="admission_officer">Admission Officer</option>
               </select>

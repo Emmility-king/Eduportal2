@@ -1,16 +1,18 @@
 import React from 'react';
 import { User } from '../../types';
-import { 
-  GraduationCap, 
-  Home, 
-  FileText, 
-  Upload, 
-  CreditCard, 
-  Users, 
-  Settings, 
+import {
+  GraduationCap,
+  Home,
+  FileText,
+  Upload,
+  CreditCard,
+  Users,
+  Settings,
   BarChart3,
   UserCheck,
-  X
+  X,
+  BookOpen,
+  TrendingUp
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -21,12 +23,12 @@ interface SidebarProps {
   setSidebarOpen: (open: boolean) => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ 
-  user, 
-  activeTab, 
-  setActiveTab, 
-  sidebarOpen, 
-  setSidebarOpen 
+export const Sidebar: React.FC<SidebarProps> = ({
+  user,
+  activeTab,
+  setActiveTab,
+  sidebarOpen,
+  setSidebarOpen
 }) => {
   const getMenuItems = () => {
     const baseItems = [
@@ -41,7 +43,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           { id: 'documents', label: 'Documents', icon: Upload },
           { id: 'payment', label: 'Payment', icon: CreditCard },
         ];
-      
+
       case 'parent':
         return [
           ...baseItems,
@@ -49,7 +51,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           { id: 'applications', label: 'Applications', icon: FileText },
           { id: 'payments', label: 'Payments', icon: CreditCard },
         ];
-      
+
       case 'admin':
         return [
           ...baseItems,
@@ -58,7 +60,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           { id: 'analytics', label: 'Analytics', icon: BarChart3 },
           { id: 'settings', label: 'Settings', icon: Settings },
         ];
-      
+
       case 'admission_officer':
         return [
           ...baseItems,
@@ -66,7 +68,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
           { id: 'documents', label: 'Document Verification', icon: Upload },
           { id: 'analytics', label: 'Reports', icon: BarChart3 },
         ];
-      
+
+      case 'teacher':
+        return [
+          ...baseItems,
+          { id: 'students', label: 'My Students', icon: Users },
+          { id: 'classes', label: 'My Classes', icon: BookOpen },
+          { id: 'assignments', label: 'Assignments', icon: FileText },
+          { id: 'grades', label: 'Grades', icon: TrendingUp },
+        ];
+
       default:
         return baseItems;
     }
@@ -77,22 +88,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <>
       {sidebarOpen && (
-        <div 
-          className="fixed inset-0 z-40 lg:hidden" 
+        <div
+          className="fixed inset-0 z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         >
           <div className="fixed inset-0 bg-gray-600 bg-opacity-75"></div>
         </div>
       )}
-      
-      <div className={`
-        fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0
-        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-      `}>
+
+      <div
+        className={
+          "fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 " +
+          (sidebarOpen ? "translate-x-0" : "-translate-x-full")
+        }
+      >
         <div className="flex items-center justify-between h-16 px-6 bg-gradient-to-r from-blue-600 to-indigo-600">
           <div className="flex items-center">
             <GraduationCap className="h-8 w-8 text-white" />
-            <span className="ml-2 text-xl font-bold text-white">EduPortal</span>
+            <span className="ml-2 text-xl font-bold text-white">Nigerian Secondary School Portal</span>
           </div>
           <button
             onClick={() => setSidebarOpen(false)}
@@ -101,7 +114,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <X className="h-6 w-6" />
           </button>
         </div>
-        
+
         <nav className="mt-6 px-3">
           <div className="space-y-1">
             {menuItems.map((item) => (
@@ -111,15 +124,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   setActiveTab(item.id);
                   setSidebarOpen(false);
                 }}
-                className={`
-                  w-full flex items-center px-3 py-2 text-sm font-medium rounded-md transition duration-200
-                  ${activeTab === item.id
-                    ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                  }
-                `}
+                className={
+                  "w-full flex items-center px-3 py-2 text-sm font-medium rounded-md transition duration-200 " +
+                  (activeTab === item.id
+                    ? "bg-blue-50 text-blue-700 border-r-2 border-blue-700"
+                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900")
+                }
               >
-                <item.icon className={`mr-3 h-5 w-5 ${activeTab === item.id ? 'text-blue-700' : 'text-gray-400'}`} />
+                <item.icon className={"mr-3 h-5 w-5 " + (activeTab === item.id ? "text-blue-700" : "text-gray-400")} />
                 {item.label}
               </button>
             ))}
