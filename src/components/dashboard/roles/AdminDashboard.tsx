@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { User, Application } from '../../../types';
-import { BarChart3, Users, FileText, TrendingUp, Eye, UserCheck, X } from 'lucide-react';
+import { useEnrollment } from '../../../hooks/useEnrollment';
+import { generateEnrollmentSummaryReport, generateClassListReport } from '../../../services/reports';
+import { EnrollmentSummaryReportComponent } from '../../reports/EnrollmentSummaryReport';
+import { ClassListReportComponent } from '../../reports/ClassListReport';
+import { BarChart3, Users, FileText, TrendingUp, Eye, UserCheck, X, FileBarChart, GraduationCap } from 'lucide-react';
 
 interface AdminDashboardProps {
   user: User;
@@ -9,38 +13,7 @@ interface AdminDashboardProps {
 }
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, activeTab, setActiveTab }) => {
-  const [applications] = useState<Application[]>([
-    {
-      id: '1',
-      studentName: 'John Smith',
-      email: 'john.smith@email.com',
-      phone: '+1 (555) 123-4567',
-      grade: '10th Grade',
-      status: 'under_review',
-      submittedAt: new Date('2024-01-15'),
-      documents: []
-    },
-    {
-      id: '2',
-      studentName: 'Emily Johnson',
-      email: 'emily.johnson@email.com',
-      phone: '+1 (555) 987-6543',
-      grade: '9th Grade',
-      status: 'approved',
-      submittedAt: new Date('2024-01-10'),
-      documents: []
-    },
-    {
-      id: '3',
-      studentName: 'Michael Brown',
-      email: 'michael.brown@email.com',
-      phone: '+1 (555) 456-7890',
-      grade: '11th Grade',
-      status: 'payment_pending',
-      submittedAt: new Date('2024-01-12'),
-      documents: []
-    }
-  ]);
+  const { applications, students, enrollments, classes, approveApplication, enrollStudent } = useEnrollment();
 
   const stats = {
     totalApplications: applications.length,
@@ -261,13 +234,30 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, activeTab,
                     {application.submittedAt.toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                    <button className="text-blue-600 hover:text-blue-900">
+                    <button className="text-blue-600 hover:text-blue-900" title="View Details">
                       <Eye className="h-4 w-4" />
                     </button>
-                    <button className="text-green-600 hover:text-green-900">
-                      <UserCheck className="h-4 w-4" />
-                    </button>
-                    <button className="text-red-600 hover:text-red-900">
+                    {application.status === 'submitted' || application.status === 'under_review' ? (
+                      <button
+                        onClick={() => approveApplication(application.id, user.id)}
+                        className="text-green-600 hover:text-green-900"
+                        title="Approve Application"
+                      >
+                        <UserCheck className="h-4 w-4" />
+                      </button>
+                    ) : application.status === 'approved' ? (
+                      <button
+                        onClick={() => {
+                          const enrollment = enrollments.find(e => e.studentId === application.studentId);
+                          if (enrollment) enrollStudent(enrollment.enrollmentId);
+                        }}
+                        className="text-purple-600 hover:text-purple-900"
+                        title="Enroll Student"
+                      >
+                        <GraduationCap className="h-4 w-4" />
+                      </button>
+                    ) : null}
+                    <button className="text-red-600 hover:text-red-900" title="Reject">
                       <X className="h-4 w-4" />
                     </button>
                   </td>
@@ -300,6 +290,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, activeTab,
           <h1 className="text-2xl font-bold text-gray-900 mb-6">Analytics</h1>
           <div className="bg-white rounded-lg shadow-sm border p-6">
             <p className="text-gray-500">Analytics and reports will be displayed here.</p>
+          </div>
+        </div>
+      );
+    case 'reports':
+      return (
+        <div className="p-6">
+          <h1 className="text-2xl font-bold text-gray-900 mb-6">Reports</h1>
+          <div className="space-y-6">
+            <EnrollmentSummaryReportComponent
+              report={generateEnrollmentSummaryReport(applications, enrollments, students)}
+            />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {classes.map(cls => {
+                const report = generateClassListReport(cls, enrollments, students);
+                return <ClassListReportComponent key={cls.classId} report={report} />;
+              })}
+            </div>
           </div>
         </div>
       );

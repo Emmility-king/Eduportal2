@@ -13,19 +13,21 @@ export const ApplicationForm: React.FC<ApplicationFormProps> = ({ application, o
     lastName: application?.studentName.split(' ')[1] || '',
     email: application?.email || '',
     phone: application?.phone || '',
-    dateOfBirth: '',
+    dateOfBirth: application?.dateOfBirth ? new Date(application.dateOfBirth).toISOString().split('T')[0] : '',
+    gender: application?.gender || '',
     grade: application?.grade || '',
-    address: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    country: 'Nigeria',
-    parentName: '',
-    parentEmail: '',
-    parentPhone: '',
-    previousSchool: '',
-    medicalConditions: '',
-    additionalInfo: ''
+    address: application?.address || '',
+    city: application?.city || '',
+    state: application?.state || '',
+    zipCode: application?.zipCode || '',
+    country: application?.country || 'Nigeria',
+    parentName: application?.parentName || '',
+    parentEmail: application?.parentEmail || '',
+    parentPhone: application?.parentPhone || '',
+    previousSchool: application?.previousSchool || '',
+    medicalConditions: application?.medicalConditions || '',
+    additionalInfo: application?.additionalInfo || '',
+    admissionDate: application?.admissionDate ? new Date(application.admissionDate).toISOString().split('T')[0] : ''
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -35,8 +37,12 @@ export const ApplicationForm: React.FC<ApplicationFormProps> = ({ application, o
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const dataToSave = {
+      ...formData,
+      studentName: `${formData.firstName} ${formData.lastName}`
+    };
     if (onSave) {
-      onSave(formData);
+      onSave(dataToSave);
     }
   };
 
@@ -135,7 +141,26 @@ export const ApplicationForm: React.FC<ApplicationFormProps> = ({ application, o
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
                 />
               </div>
-              
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Gender *
+                </label>
+                <select
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                  required
+                  disabled={isReadOnly}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
+                >
+                  <option value="">Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Grade Applying For *
@@ -154,6 +179,21 @@ export const ApplicationForm: React.FC<ApplicationFormProps> = ({ application, o
                   <option value="11th Grade">11th Grade</option>
                   <option value="12th Grade">12th Grade</option>
                 </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Admission Date *
+                </label>
+                <input
+                  type="date"
+                  name="admissionDate"
+                  value={formData.admissionDate}
+                  onChange={handleChange}
+                  required
+                  disabled={isReadOnly}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
+                />
               </div>
             </div>
           </div>
@@ -204,6 +244,21 @@ export const ApplicationForm: React.FC<ApplicationFormProps> = ({ application, o
                   type="text"
                   name="state"
                   value={formData.state}
+                  onChange={handleChange}
+                  required
+                  disabled={isReadOnly}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Zip Code *
+                </label>
+                <input
+                  type="text"
+                  name="zipCode"
+                  value={formData.zipCode}
                   onChange={handleChange}
                   required
                   disabled={isReadOnly}

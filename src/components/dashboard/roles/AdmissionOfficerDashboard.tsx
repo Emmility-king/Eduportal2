@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { User, Application } from '../../../types';
+import { useEnrollment } from '../../../hooks/useEnrollment';
 import { FileText, CheckCircle, Clock, AlertCircle, Eye, UserCheck, X } from 'lucide-react';
+import { EnrollmentSummaryReportComponent } from '../../reports/EnrollmentSummaryReport';
+import { ClassListReportComponent } from '../../reports/ClassListReport';
+import { EnrollmentConfirmationSlip } from '../../reports/EnrollmentConfirmation';
 
 interface AdmissionOfficerDashboardProps {
   user: User;
@@ -9,42 +13,7 @@ interface AdmissionOfficerDashboardProps {
 }
 
 export const AdmissionOfficerDashboard: React.FC<AdmissionOfficerDashboardProps> = ({ user, activeTab, setActiveTab }) => {
-  const [applications] = useState<Application[]>([
-    {
-      id: '1',
-      studentName: 'Sarah Wilson',
-      email: 'sarah.wilson@email.com',
-      phone: '+1 (555) 123-4567',
-      grade: '10th Grade',
-      status: 'under_review',
-      submittedAt: new Date('2024-01-15'),
-      documents: [
-        { id: '1', name: 'Birth Certificate', type: 'birth_certificate', url: '#', status: 'pending', uploadedAt: new Date() }
-      ]
-    },
-    {
-      id: '2',
-      studentName: 'David Chen',
-      email: 'david.chen@email.com',
-      phone: '+1 (555) 987-6543',
-      grade: '9th Grade',
-      status: 'documents_required',
-      submittedAt: new Date('2024-01-10'),
-      documents: []
-    },
-    {
-      id: '3',
-      studentName: 'Maria Garcia',
-      email: 'maria.garcia@email.com',
-      phone: '+1 (555) 456-7890',
-      grade: '11th Grade',
-      status: 'submitted',
-      submittedAt: new Date('2024-01-12'),
-      documents: [
-        { id: '2', name: 'Previous Report Card', type: 'previous_report', url: '#', status: 'verified', uploadedAt: new Date() }
-      ]
-    }
-  ]);
+  const { applications, approveApplication, verifyDocument, rejectDocument } = useEnrollment();
 
   const stats = {
     pendingReview: applications.filter(app => app.status === 'under_review' || app.status === 'submitted').length,
@@ -160,10 +129,18 @@ export const AdmissionOfficerDashboard: React.FC<AdmissionOfficerDashboardProps>
                     </p>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <button className="text-green-600 hover:text-green-800 p-1">
+                    <button
+                      onClick={() => verifyDocument(app.id, doc.id)}
+                      className="text-green-600 hover:text-green-800 p-1"
+                      title="Verify Document"
+                    >
                       <CheckCircle className="h-4 w-4" />
                     </button>
-                    <button className="text-red-600 hover:text-red-800 p-1">
+                    <button
+                      onClick={() => rejectDocument(app.id, doc.id)}
+                      className="text-red-600 hover:text-red-800 p-1"
+                      title="Reject Document"
+                    >
                       <X className="h-4 w-4" />
                     </button>
                   </div>
@@ -273,7 +250,11 @@ export const AdmissionOfficerDashboard: React.FC<AdmissionOfficerDashboardProps>
                       <button className="text-blue-600 hover:text-blue-900">
                         <Eye className="h-4 w-4" />
                       </button>
-                      <button className="text-green-600 hover:text-green-900">
+                      <button
+                        onClick={() => approveApplication(application.id, user.id)}
+                        className="text-green-600 hover:text-green-900"
+                        title="Approve Application"
+                      >
                         <CheckCircle className="h-4 w-4" />
                       </button>
                       <button className="text-red-600 hover:text-red-900">
@@ -308,8 +289,18 @@ export const AdmissionOfficerDashboard: React.FC<AdmissionOfficerDashboardProps>
       return (
         <div className="p-6">
           <h1 className="text-2xl font-bold text-gray-900 mb-6">Reports & Analytics</h1>
-          <div className="bg-white rounded-lg shadow-sm border p-6">
-            <p className="text-gray-500">Reports and analytics will be displayed here.</p>
+          <div className="space-y-6">
+            <EnrollmentSummaryReportComponent report={{ session: '2023-2024', totalApplications: 100, approvedApplications: 80, enrolledStudents: 75, byGrade: [], byGender: [] }} />
+            <ClassListReportComponent report={{ className: '10th Grade', section: 'A', totalStudents: 30, students: [] }} />
+            <EnrollmentConfirmationSlip confirmation={{
+              studentName: 'John Smith',
+              studentId: 'S12345',
+              className: '10th Grade',
+              section: 'A',
+              session: '2023-2024',
+              enrollmentDate: new Date(),
+              admissionDate: new Date()
+            }} />
           </div>
         </div>
       );

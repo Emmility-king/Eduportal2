@@ -58,6 +58,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           { id: 'applications', label: 'All Applications', icon: FileText },
           { id: 'students', label: 'Students', icon: Users },
           { id: 'analytics', label: 'Analytics', icon: BarChart3 },
+          { id: 'reports', label: 'Reports', icon: TrendingUp },
           { id: 'settings', label: 'Settings', icon: Settings },
         ];
 
@@ -105,7 +106,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <div className="flex items-center justify-between h-16 px-6 bg-gradient-to-r from-blue-600 to-indigo-600">
           <div className="flex items-center">
             <GraduationCap className="h-8 w-8 text-white" />
-            <span className="ml-2 text-xl font-bold text-white">Nigerian Secondary School Portal</span>
+            <span className="ml-2 text-xl font-bold text-white">Enrollment Portal</span>
           </div>
           <button
             onClick={() => setSidebarOpen(false)}
