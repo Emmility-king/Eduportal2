@@ -3,7 +3,7 @@ import { Application } from '../../types';
 import { Save, Send, User, Mail, Phone, Calendar, MapPin } from 'lucide-react';
 
 interface ApplicationFormProps {
-  application?: Application;
+  application?: Application; 
   onSave?: (data: any) => void;
 }
 
